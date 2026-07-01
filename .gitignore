@@ -1,18 +1,36 @@
+# =========================
 # Python
+# =========================
 __pycache__/
-*.pyc
+*.py[cod]
+*.pyo
+
+# Virtual Environments
 .venv/
 venv/
 env/
 
+# =========================
 # Jupyter
+# =========================
 .ipynb_checkpoints/
 
-# Environment files
+# =========================
+# Environment Variables
+# =========================
 .env
 *.env
 
-# Raw and processed data
+# =========================
+# Azure Credentials
+# =========================
+*.pem
+*.pfx
+*.cer
+
+# =========================
+# Data
+# =========================
 data/raw/*
 data/interim/*
 data/processed/*
@@ -22,15 +40,43 @@ data/processed/*
 !data/interim/.gitkeep
 !data/processed/.gitkeep
 
+# =========================
 # Logs
+# =========================
 logs/*
 !logs/.gitkeep
 
-# BigQuery credentials
-*.json
-credentials/
-service-account-key.json
+# =========================
+# Outputs
+# =========================
+outputs/*
+!outputs/.gitkeep
 
-# OS files
+# =========================
+# Screenshots
+# =========================
+# لو هترفع الـ screenshots على GitHub احذف السطرين دول
+# screenshots/*
+# !screenshots/.gitkeep
+
+# =========================
+# OS Files
+# =========================
 .DS_Store
 Thumbs.db
+
+# =========================
+# IDE
+# =========================
+.vscode/
+.idea/
+
+# Cursor
+.cursor/
+
+# =========================
+# Python Build
+# =========================
+build/
+dist/
+*.egg-info/
