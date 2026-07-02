@@ -22,11 +22,9 @@ env/
 *.env
 
 # =========================
-# Azure Credentials
+# Google Cloud Credentials
 # =========================
-*.pem
-*.pfx
-*.cer
+config/gcp_credentials.json
 
 # =========================
 # Data
