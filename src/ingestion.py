@@ -2,10 +2,12 @@ from pathlib import Path
 import zipfile
 import polars as pl
 
+# Project root داخل Docker
+PROJECT_DIR = Path("/opt/airflow/project")
 
-RAW_DIR = Path("data/raw")
-EXTRACT_DIR = Path("data/interim/extracted")
-OUTPUT_DIR = Path("data/interim")
+RAW_DIR = PROJECT_DIR / "data" / "raw"
+EXTRACT_DIR = PROJECT_DIR / "data" / "interim" / "extracted"
+OUTPUT_DIR = PROJECT_DIR / "data" / "interim"
 OUTPUT_FILE = OUTPUT_DIR / "ingested_tripdata.csv"
 
 REQUIRED_COLUMNS = [
@@ -42,11 +44,6 @@ SCHEMA_OVERRIDES = {
 
 
 def get_csv_files(raw_dir: Path = RAW_DIR, extract_dir: Path = EXTRACT_DIR) -> list[Path]:
-    """
-    Return CSV files from data/raw if they already exist.
-    If no CSV files exist, extract ZIP files into data/interim/extracted
-    and return the extracted CSV files.
-    """
     raw_dir.mkdir(parents=True, exist_ok=True)
     extract_dir.mkdir(parents=True, exist_ok=True)
 
@@ -66,6 +63,7 @@ def get_csv_files(raw_dir: Path = RAW_DIR, extract_dir: Path = EXTRACT_DIR) -> l
             zip_ref.extractall(extract_dir)
 
     extracted_csv_files = sorted(extract_dir.rglob("*.csv"))
+
     if not extracted_csv_files:
         raise FileNotFoundError("No CSV files found after extracting ZIP files.")
 
@@ -73,10 +71,6 @@ def get_csv_files(raw_dir: Path = RAW_DIR, extract_dir: Path = EXTRACT_DIR) -> l
 
 
 def read_and_combine_csv_files(csv_files: list[Path]) -> tuple[list[str], pl.DataFrame]:
-    """
-    Read CSV files using Polars, check that each file is not empty,
-    add source_file, and combine all files into one dataframe.
-    """
     if not csv_files:
         raise ValueError("CSV files list is empty.")
 
@@ -98,7 +92,9 @@ def read_and_combine_csv_files(csv_files: list[Path]) -> tuple[list[str], pl.Dat
 
         missing_columns = [col for col in REQUIRED_COLUMNS if col not in df.columns]
         if missing_columns:
-            raise ValueError(f"File {file_path.name} is missing columns: {missing_columns}")
+            raise ValueError(
+                f"File {file_path.name} is missing columns: {missing_columns}"
+            )
 
         df = df.select(REQUIRED_COLUMNS)
         df = df.with_columns(pl.lit(file_path.name).alias("source_file"))
@@ -115,10 +111,6 @@ def read_and_combine_csv_files(csv_files: list[Path]) -> tuple[list[str], pl.Dat
 
 
 def split_datetime_columns(df: pl.DataFrame) -> pl.DataFrame:
-    """
-    Split started_at and ended_at into separate date and time columns,
-    then remove the original timestamp columns.
-    """
     df = df.with_columns(
         [
             pl.col("started_at").str.strptime(pl.Datetime, strict=False).alias("started_at_dt"),
@@ -126,8 +118,15 @@ def split_datetime_columns(df: pl.DataFrame) -> pl.DataFrame:
         ]
     )
 
-    invalid_started_at = df.filter(pl.col("started_at").is_not_null() & pl.col("started_at_dt").is_null()).height
-    invalid_ended_at = df.filter(pl.col("ended_at").is_not_null() & pl.col("ended_at_dt").is_null()).height
+    invalid_started_at = df.filter(
+        pl.col("started_at").is_not_null() &
+        pl.col("started_at_dt").is_null()
+    ).height
+
+    invalid_ended_at = df.filter(
+        pl.col("ended_at").is_not_null() &
+        pl.col("ended_at_dt").is_null()
+    ).height
 
     if invalid_started_at > 0 or invalid_ended_at > 0:
         raise ValueError(
@@ -145,7 +144,12 @@ def split_datetime_columns(df: pl.DataFrame) -> pl.DataFrame:
         ]
     )
 
-    df = df.drop(["started_at", "ended_at", "started_at_dt", "ended_at_dt"])
+    df = df.drop([
+        "started_at",
+        "ended_at",
+        "started_at_dt",
+        "ended_at_dt",
+    ])
 
     final_column_order = [
         "ride_id",
@@ -169,24 +173,25 @@ def split_datetime_columns(df: pl.DataFrame) -> pl.DataFrame:
     return df.select(final_column_order)
 
 
-def save_ingested_dataframe(df: pl.DataFrame, output_file: Path = OUTPUT_FILE) -> None:
-    """
-    Save the ingested/intermediate output outside data/raw.
-    """
+def save_ingested_dataframe(
+    df: pl.DataFrame,
+    output_file: Path = OUTPUT_FILE,
+) -> None:
     output_file.parent.mkdir(parents=True, exist_ok=True)
     df.write_csv(output_file)
     print(f"Saved ingested dataframe to: {output_file}")
 
 
 def run_ingestion() -> tuple[list[str], pl.DataFrame]:
-    """
-    Execute the ingestion stage:
-    get CSV files, read and combine them, split datetime columns,
-    and save the intermediate ingested output.
-    """
     csv_files = get_csv_files()
+
     files_list, combined_df = read_and_combine_csv_files(csv_files)
+
     final_df = split_datetime_columns(combined_df)
+
+    # تحرير الذاكرة بعد الانتهاء من استخدام DataFrame القديم
+    del combined_df
+
     save_ingested_dataframe(final_df)
 
     print("\nData ingestion completed successfully.")

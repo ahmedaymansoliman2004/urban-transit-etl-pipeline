@@ -1,0 +1,6 @@
+polars
+pyarrow
+pandas
+google-cloud-bigquery
+google-cloud-storage
+

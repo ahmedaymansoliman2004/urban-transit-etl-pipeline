@@ -1,9 +1,9 @@
 import polars as pl
 from pathlib import Path
-from transformation import (
+from src.transformation import (
     transform_data,
     save_transformation_report,
-    save_transformed_dataframe
+    save_transformed_dataframe,
 )
 
 # Path to the cleaned data
@@ -37,7 +37,7 @@ def run_transformation_pipeline() -> pl.DataFrame:
     print("\n✅ Data Transformation Completed!")
     print(f"Final Row Count: {transform_report['final_rows']:,}")
 
-    return transformed_df
+    return "Transformation Completed Successfully"
 
 if __name__ == "__main__":
     run_transformation_pipeline()
