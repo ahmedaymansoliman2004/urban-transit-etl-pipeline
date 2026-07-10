@@ -7,8 +7,10 @@ from typing import Any
 
 import polars as pl
 
-CLEANING_REPORT_PATH = Path("logs/cleaning_report.json")
-CLEANED_OUTPUT_PATH = Path("data/interim/cleaned_tripdata.csv")
+PROJECT_DIR = Path("/opt/airflow/project")
+
+CLEANING_REPORT_PATH = PROJECT_DIR / "logs" / "cleaning_report.json"
+CLEANED_OUTPUT_PATH = PROJECT_DIR / "data" / "interim" / "cleaned_tripdata.csv"
 
 VALID_MEMBER_TYPES = {"member", "casual"}
 

@@ -1,43 +1,68 @@
-import polars as pl
 from pathlib import Path
+import polars as pl
 from src.transformation import (
     transform_data,
     save_transformation_report,
     save_transformed_dataframe,
 )
 
-# Path to the cleaned data
-CLEANED_DATA_PATH = Path("data/interim/cleaned_tripdata.csv")
+from pathlib import Path
 
-def run_transformation_pipeline() -> pl.DataFrame:
-    """Read cleaned data with explicit schema and apply transformations."""
-    
+PROJECT_DIR = Path(__file__).resolve().parent.parent
+
+INGESTED_DATA_PATH = (
+    PROJECT_DIR
+    / "data"
+    / "interim"
+    / "ingested_tripdata.csv"
+)
+
+CLEANED_DATA_PATH = (
+    PROJECT_DIR
+    / "data"
+    / "interim"
+    / "cleaned_tripdata.csv"
+)
+
+def run_transformation_pipeline():
+    print("Running Transformation Pipeline...")
+
+    # 1. Check Existence
     if not CLEANED_DATA_PATH.exists():
-        raise FileNotFoundError(f"Cleaned data not found at {CLEANED_DATA_PATH}. Run cleaning first.")
+        raise FileNotFoundError(f"Cleaned data missing: {CLEANED_DATA_PATH}")
+        
+    if not INGESTED_DATA_PATH.exists():
+        raise FileNotFoundError(f"Ingested data missing: {INGESTED_DATA_PATH}")
 
+    # 2. Check Freshness (The Claude Fix)
+    # Ensure cleaned data was generated AFTER the ingested data
+    if CLEANED_DATA_PATH.stat().st_mtime < INGESTED_DATA_PATH.stat().st_mtime:
+        raise RuntimeError(
+            f"🚨 STALE DATA DETECTED: {CLEANED_DATA_PATH.name} is older than {INGESTED_DATA_PATH.name}. "
+            "The cleaning task did not run on the current data."
+        )
+
+    # 3. Read Cleaned Data
     print(f"Reading cleaned data from: {CLEANED_DATA_PATH}")
-    
-    # Use schema_overrides to ensure station IDs are read as strings
     cleaned_df = pl.read_csv(
         CLEANED_DATA_PATH,
-        schema_overrides={
-            "start_station_id": pl.Utf8,
-            "end_station_id": pl.Utf8
-        }
+        infer_schema_length=10000,
+        schema_overrides={"start_station_id": pl.Utf8, "end_station_id": pl.Utf8}
     )
 
-    # Start Transformation
     print("Starting Data Transformation...")
-    transformed_df, transform_report = transform_data(cleaned_df)
 
-    # Save outputs
-    save_transformation_report(transform_report)
+    # 4. Transform Data
+    transformed_df, report = transform_data(cleaned_df)
+
+    # 5. Save Outputs
+    save_transformation_report(report)
     save_transformed_dataframe(transformed_df)
 
-    print("\n✅ Data Transformation Completed!")
-    print(f"Final Row Count: {transform_report['final_rows']:,}")
+    print("✅ Data Transformation Completed!")
+    print(f"Final Row Count: {transformed_df.height}")
 
-    return "Transformation Completed Successfully"
+    return transformed_df
 
 if __name__ == "__main__":
     run_transformation_pipeline()
