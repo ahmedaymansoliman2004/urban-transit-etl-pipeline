@@ -1,4 +1,3 @@
-```
 # 🚇 Urban Transit ETL Pipeline
 
 **Enterprise-Grade Batch Data Pipeline for Large-Scale Urban Mobility Data**
@@ -558,7 +557,5 @@ Distributed under the MIT License. See `LICENSE` for more information.
 * [Digital Egypt Pioneers Initiative (DEPI) / Roa'd Masr El Rakameya](https://www.google.com/search?q=https://depi.gov.eg/) for the comprehensive training and opportunity.
 * [NYC Citi Bike](https://citibikenyc.com/) for their commitment to Open Data and providing the foundational dataset.
 * [Polars Community](https://pola.rs/) for building an exceptionally fast dataframe library.
-
-```
 
 ```
