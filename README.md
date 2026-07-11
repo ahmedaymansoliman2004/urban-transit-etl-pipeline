@@ -1,3 +1,4 @@
+```
 # 🚇 Urban Transit ETL Pipeline
 
 **Enterprise-Grade Batch Data Pipeline for Large-Scale Urban Mobility Data**
@@ -8,42 +9,34 @@
 
 ## 📑 Table of Contents
 
-* [Overview](https://www.google.com/search?q=%23-overview)
-* [Features](https://www.google.com/search?q=%23-features)
-* [Objectives](https://www.google.com/search?q=%23-objectives)
-* [Architecture](https://www.google.com/search?q=%23-architecture)
-* [Architecture Diagram](https://www.google.com/search?q=%23architecture-diagram)
-* [ETL Workflow](https://www.google.com/search?q=%23etl-workflow)
-
-
-* [Folder Structure](https://www.google.com/search?q=%23-folder-structure)
-* [Technologies](https://www.google.com/search?q=%23-technologies)
-* [Dataset](https://www.google.com/search?q=%23-dataset)
-* [Dataset Statistics](https://www.google.com/search?q=%23dataset-statistics)
-* [Data Profile](https://www.google.com/search?q=%23data-profile)
-
-
-* [Installation](https://www.google.com/search?q=%23-installation)
-* [Requirements](https://www.google.com/search?q=%23requirements)
-* [Quick Start](https://www.google.com/search?q=%23quick-start)
-
-
-* [Usage](https://www.google.com/search?q=%23-usage)
-* [Configuration](https://www.google.com/search?q=%23configuration)
-
-
-* [Pipeline Modules](https://www.google.com/search?q=%23-pipeline-modules)
-* [BigQuery Integration](https://www.google.com/search?q=%23-bigquery-integration)
-* [SQL Analytics](https://www.google.com/search?q=%23-sql-analytics)
-* [Automation & Orchestration](https://www.google.com/search?q=%23-automation--orchestration)
-* [Logging & Monitoring](https://www.google.com/search?q=%23-logging--monitoring)
-* [Documentation](https://www.google.com/search?q=%23-documentation)
-* [Roadmap](https://www.google.com/search?q=%23-roadmap)
-* [Team](https://www.google.com/search?q=%23-team)
-* [Future Improvements](https://www.google.com/search?q=%23-future-improvements)
-* [Contributing](https://www.google.com/search?q=%23-contributing)
-* [License](https://www.google.com/search?q=%23-license)
-* [Acknowledgements](https://www.google.com/search?q=%23-acknowledgements)
+* [Overview](#-overview)
+* [Features](#-features)
+* [Objectives](#-objectives)
+* [Architecture](#-architecture)
+  * [Architecture Diagram](#architecture-diagram)
+  * [ETL Workflow](#etl-workflow)
+* [Folder Structure](#-folder-structure)
+* [Technologies](#-technologies)
+* [Dataset](#-dataset)
+  * [Dataset Statistics](#dataset-statistics)
+  * [Data Profile](#data-profile)
+* [Installation](#-installation)
+  * [Requirements](#requirements)
+  * [Quick Start](#quick-start)
+* [Usage](#-usage)
+  * [Configuration](#configuration)
+* [Pipeline Modules](#-pipeline-modules)
+* [BigQuery Integration](#-bigquery-integration)
+* [SQL Analytics](#-sql-analytics)
+* [Automation & Orchestration](#-automation--orchestration)
+* [Logging & Monitoring](#-logging--monitoring)
+* [Documentation](#-documentation)
+* [Roadmap](#-roadmap)
+* [Team](#-team)
+* [Future Improvements](#-future-improvements)
+* [Contributing](#-contributing)
+* [License](#-license)
+* [Acknowledgements](#-acknowledgements)
 
 ---
 
@@ -100,6 +93,7 @@ The architecture follows a classic Batch ETL pattern, strictly decoupling extrac
 |    Reporting)     |       |                   |       |                   |
 +-------------------+       +-------------------+       +-------------------+
 
+
 ```
 
 ### ETL Workflow
@@ -126,6 +120,7 @@ The detailed step-by-step data journey through the pipeline:
    ├─► 8. SQL Analytics (Aggregations, materialized views creation)
    │
    └─► [Analytics Ready]
+
 
 ```
 
@@ -170,6 +165,7 @@ urban-transit-etl-pipeline/
 ├── .gitignore                # Untracked files configuration
 ├── LICENSE                   # Open-source license definition
 └── CHANGELOG.md              # Version history and release notes
+
 
 ```
 
@@ -271,36 +267,36 @@ Follow these steps to set up the environment locally.
 ### Quick Start
 
 1. **Clone the repository:**
+
 ```bash
-git clone https://github.com/your-username/urban-transit-etl-pipeline.git
+git clone [https://github.com/your-username/urban-transit-etl-pipeline.git](https://github.com/your-username/urban-transit-etl-pipeline.git)
 cd urban-transit-etl-pipeline
 
 ```
 
-
 2. **Create a virtual environment:**
+
 ```bash
 python -m venv venv
 source venv/bin/activate  # On Windows use `venv\Scripts\activate`
 
 ```
 
-
 3. **Install dependencies:**
+
 ```bash
 pip install --upgrade pip
 pip install -r requirements.txt
 
 ```
 
-
 4. **Prepare Data Directories:**
 The required `.gitkeep` directories are already present, but ensure the structure exists:
+
 ```bash
 mkdir -p data/raw data/processed data/parquet logs config
 
 ```
-
 
 5. **Download the Dataset:**
 Place `202401-citibike-tripdata_1.csv` and `202401-citibike-tripdata_2.csv` into `data/raw/`.
@@ -510,7 +506,7 @@ Detailed documentation is essential for hand-offs and maintenance. Check the `/d
 | **Phase 5** | Parquet Conversion & BigQuery Loading | ✅ |
 | **Phase 6** | SQL Analytics & Materialized Views | ✅ |
 | **Phase 7** | Automation (Cron/Airflow) & Logging | ✅ |
-| **Phase 8** | Final Presentation, Demo, & Polish | ⏳ |
+| **Phase 8** | Final Presentation, Demo, & Polish | ✅ |
 
 **Final Project Deadline:** 17 July 2026
 
@@ -523,7 +519,6 @@ This project was developed by the DEPI Data Engineering Team.
 | Name | Role | GitHub |
 | --- | --- | --- |
 | **Ahmed Ayman Soliman** | Project Manager & Data Engineer | [@ahmedaymansoliman2004](https://github.com/ahmedaymansoliman2004) |
-| **Rokaya Mohammed Elsaid Ahmed** | Data Engineer | [@RokayaMohammed](https://www.google.com/search?q=https://github.com/) |
 | **May Mohammed Massoud** | Data Engineer | [@Maimohamed2](https://github.com/Maimohamed2) |
 | **Yousef Loley Abdelrahman** | Data Engineer | [@youssefloly](https://github.com/youssefloly) |
 
@@ -561,5 +556,9 @@ Distributed under the MIT License. See `LICENSE` for more information.
 ## 🎓 Acknowledgements
 
 * [Digital Egypt Pioneers Initiative (DEPI) / Roa'd Masr El Rakameya](https://www.google.com/search?q=https://depi.gov.eg/) for the comprehensive training and opportunity.
-* [NYC Citi Bike](https://www.google.com/search?q=https://citibikenyc.com/) for their commitment to Open Data and providing the foundational dataset.
-* [Polars Community](https://www.google.com/search?q=https://pola.rs/) for building an exceptionally fast dataframe library.
+* [NYC Citi Bike](https://citibikenyc.com/) for their commitment to Open Data and providing the foundational dataset.
+* [Polars Community](https://pola.rs/) for building an exceptionally fast dataframe library.
+
+```
+
+```
